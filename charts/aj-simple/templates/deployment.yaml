@@ -15,6 +15,9 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+            - name: envval
+              value: {{ .Values.envval }}
           ports:
             - name: http
               containerPort: 80
