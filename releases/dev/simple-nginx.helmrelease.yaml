@@ -11,4 +11,4 @@ spec:
     path: charts/aj-simple
     ref: dev
   values:
-    envval: hr-value-dev-on-dev-branch-01
+    envval: hr-value-dev-02
