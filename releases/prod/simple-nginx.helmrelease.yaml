@@ -1,0 +1,14 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: simple-nginx
+  namespace: helm-test-fake-prod
+spec:
+  releaseName: simple-nginx
+  chart:
+    git: git@github.com:ajaegle/helm-operator-git-repos-test.git
+    path: charts/aj-simple
+    ref: main
+  values:
+    envval: hr-value-prod-on-dev-branch-01
