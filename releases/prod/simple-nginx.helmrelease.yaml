@@ -9,6 +9,6 @@ spec:
   chart:
     git: git@github.com:ajaegle/helm-operator-git-repos-test.git
     path: charts/aj-simple
-    ref: main
+    ref: charts/aj-simple/0.1.0
   values:
     envval: hr-value-prod-02
