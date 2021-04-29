@@ -19,7 +19,7 @@ spec:
             - name: envval
               value: {{ .Values.envval }}
             - name: fixedenvval
-              value: fixed-env-val-from-chart-02
+              value: fixed-env-val-from-chart-03
           ports:
             - name: http
               containerPort: 80
