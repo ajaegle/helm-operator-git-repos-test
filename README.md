@@ -2,9 +2,17 @@
 
 This repository evaluates flux v1's [helm-operator](https://github.com/fluxcd/helm-operator) installing charts from git sources using git refs as the only way of specifying the version of the chart to be installed. 
 
-With flux v2, [source-controller](https://github.com/fluxcd/source-controller) and [helm-controller](https://github.com/fluxcd/helm-controller) and some changes to how helm requires chart versions, this might behave differently. This repository is meant to be used to test migrations from flux v1 to v2 and so from helm-operator to helm-controller.
+With flux v2, [source-controller](https://github.com/fluxcd/source-controller) and [helm-controller](https://github.com/fluxcd/helm-controller) and some changes to how helm requires chart versions, this might behave differently. This repository is meant to be used to test migrations from flux v1 to v2 and so from helm-operator to source-/helm-controller.
 
-PR tracking the feature to allow similar behaviour with flux v2: https://github.com/fluxcd/source-controller/pull/308
+There is already a PR tracking the feature to allow similar behaviour with flux v2: https://github.com/fluxcd/source-controller/pull/308
+
+## What the docs say...
+
+The [helm-operator docs](https://docs.fluxcd.io/projects/helm-operator/en/stable/helmrelease-guide/chart-sources/#charts-from-git-repositories) shed some light on how installing charts from git sources work.
+
+> Charts from Git repositories
+> - Move by mirroring the Git repository and fetching the latest HEAD for the configured .chart.ref on an interval (i.e. when a change is detected in Git under the .chart.path, a release will be scheduled for an upgrade).
+> - Share their Git repository mirror with HelmRelease resources making use of the same .chart.git, .chart.ref and .chart.secretKeyRef.
 
 ## Structure
 
@@ -19,10 +27,9 @@ The chart's own version number remains unchanged. Helm will report that as 0.1.0
 To verify this setup:
 
 - create a deploy key for the git repo
-- install the latest `helm-operator` (1.2.0) supplying the key
+- install `helm-operator` CRDs for 1.2.0
+- install the latest `helm-operator` (1.2.0) supplying a reference to the ssh key
 - create two namespaces and apply the corresponding `HelmRelease`s
-
-
 
 ### Helm operator
 
@@ -37,6 +44,8 @@ k create secret generic helm-operator-ssh \
     --from-file=./identity \
     --namespace flux
 
+k apply -f https://raw.githubusercontent.com/fluxcd/helm-operator/1.2.0/deploy/crds.yaml
+
 helm upgrade -i helm-operator fluxcd/helm-operator \
     --namespace flux \
     --version 1.2.0 \
@@ -44,7 +53,7 @@ helm upgrade -i helm-operator fluxcd/helm-operator \
     --set git.ssh.secretName=helm-operator-ssh
 ```
 
-### Install HelmReleases
+### Apply HelmReleases
 
 dev (aka latest and greatest helm chart)
 
